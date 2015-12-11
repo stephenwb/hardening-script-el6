@@ -233,7 +233,7 @@ if [ ! -f "$BACKUP/login.defs.orig" ]; then
 fi
 
 if [ ! -f "$BACKUP/audit.rules.orig" ]; then
-	cp /etc/audit/audit.rules $BACKUP/audit.rules.orig
+	cp /etc/audit/rules.d/audit.rules $BACKUP/audit.rules.orig
 fi
 
 if [ ! -f "$BACKUP/auditd.conf.orig" ]; then
@@ -341,16 +341,11 @@ cp -f ./config/login.defs /etc/login.defs
 cp -f ./config/smb.conf /etc/samba/smb.conf
 
 #### AUDITING RULES
-cp -f ./config/auditd.conf /etc/audit/auditd.conf
+cp -f ./config/auditd.conf /etc/audit/rules.d/auditd.conf
 if [ "$ARCH" == "x86_64" ]; then
-	cp -f ./config/audit.rules /etc/audit/audit.rules
+	cp -f ./config/audit.rules /etc/audit/rules.d/audit.rules
 else
 	grep -v 'b64' ./config/audit.rules > /etc/audit/rules.d/audit.rules
-fi
-
-# Remove RHEL 6.6 /etc/audit/rules.d directory
-if [ -d /etc/audit/rules.d ]; then
-	rm -rf /etc/audit/rules.d
 fi
 
 #### FIREWALL CONFIGURATIONS (IPV4/IPV6)
